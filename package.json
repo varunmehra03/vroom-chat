@@ -1,5 +1,5 @@
 {
-  "name": "vroom-app",
+  "name": "vroom-chat-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
-    "node":"8.7.9"
+    "node":"8.9.3"
   },
   "author": "",
   "license": "ISC",
