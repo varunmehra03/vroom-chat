@@ -1,5 +1,4 @@
-
-
+const moment = require('moment');
 
 // var createMessage = (from, text)=>{
 //     return  {
@@ -22,7 +21,7 @@ module.exports = (function () {
         return  {
             from,
             text,
-            createdAt: new Date().getTime()
+            createdAt: moment().valueOf()
         };
     };
     createCoordsMessage = (from, latitude, longitude)=>{
