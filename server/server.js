@@ -23,12 +23,12 @@ io.on('connection', (socket)=>{
     socket.on('createMessage', (newMsg, callback) =>{
         //io.emit to emit to all connected clients.
         io.emit('newMessage',createMessage(newMsg.from,newMsg.text));
-        callback("Yeah!! Server Acknowledged receiving the message");
+        callback();
     });
 
     socket.on('createLocationMessage', (coords, callback) =>{
         io.emit('newLocationMessage', createCoordsMessage('Admin',coords.latitude, coords.longitude));
-        callback("Yeah!! Server Acknowledged receiving the coords");
+        callback();
     });
 });
 
