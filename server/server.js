@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
+const {createMessage, createCoordsMessage} = require('./utils/utils');
 const publicPath = path.join(__dirname,'../public');
 const port = process.env.PORT || 3000;
 var app = express();
@@ -12,17 +13,8 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket)=>{
     console.log("New User Connected");
-    socket.broadcast.emit('newMessage', {
-        from:'Admin',
-        text:'New User Joined',
-        createdAt: new Date().getTime()
-    });
-
-    socket.emit('newMessage', {
-        from:'Admin',
-        text:'Welcome to Vroom Chat',
-        createdAt: new Date().getTime()
-    });
+    socket.broadcast.emit('newMessage', createMessage('Admin','New User Joined'));
+    socket.emit('newMessage',createMessage('Admin','Welcome to Vroom Chat'));
 
     socket.on('disconnect',()=>{
         console.log("User was disconnected");
@@ -30,13 +22,13 @@ io.on('connection', (socket)=>{
 
     socket.on('createMessage', (newMsg, callback) =>{
         //io.emit to emit to all connected clients.
-        io.emit('newMessage', {
-            from:newMsg.from,
-            text:newMsg.text,
-            createdAt: new Date().getTime()
-        });
-
+        io.emit('newMessage',createMessage(newMsg.from,newMsg.text));
         callback("Yeah!! Server Acknowledged receiving the message");
+    });
+
+    socket.on('createLocationMessage', (coords, callback) =>{
+        io.emit('newLocationMessage', createCoordsMessage('Admin',coords.latitude, coords.longitude));
+        callback("Yeah!! Server Acknowledged receiving the coords");
     });
 });
 
