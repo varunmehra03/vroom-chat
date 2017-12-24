@@ -29,13 +29,23 @@ socket.on('newMessage', function(msg) {
 // });
 
 socket.on('newLocationMessage', function(msg){
+    let template = jQuery('#location-template').html();
     let formattedTime = moment(msg.createdAt).format('h:mm:ss a');
-    let li = jQuery('<li></li>');
-    let a = jQuery('<a target="_blank">My Current Location</a>');
-    a.attr('href',msg.url);
-    li.text(`${msg.from} ${formattedTime}: `);
-    li.append(a);
-    jQuery("#messages").append(li);
+    let html = Mustache.render(template, {
+        url: msg.url,
+        from: msg.from,
+        createdAt: formattedTime
+    });
+    jQuery('#messages').append(html);
+
+    //
+    // let formattedTime = moment(msg.createdAt).format('h:mm:ss a');
+    // let li = jQuery('<li></li>');
+    // let a = jQuery('<a target="_blank">My Current Location</a>');
+    // a.attr('href',msg.url);
+    // li.text(`${msg.from} ${formattedTime}: `);
+    // li.append(a);
+    // jQuery("#messages").append(li);
 });
 
 msgTextBox.on('input',function(){
