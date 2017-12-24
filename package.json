@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.6.6",
     "express": "^4.16.2",
     "socket.io": "^2.0.4"
   }
