@@ -2,7 +2,23 @@ const sendButton = jQuery('#send-message');
 const msgTextBox = jQuery('input[name=message]');
 const chatForm = jQuery('#chat-form');
 const locationButton = jQuery('#send-location');
+const messagesElem = jQuery('#messages');
 const buttonText = {'Sending':'Sending location...', 'Default':'Send location'};
+
+
+function scrollToBottom(){
+    let clientHeight = messagesElem.prop('clientHeight');
+    let scrollTop = messagesElem.prop('scrollTop');
+    let scrollHeight = messagesElem.prop('scrollHeight');
+    const newMessageElem = messagesElem.children('li:last-child');
+    let newMessageHeight = newMessageElem.innerHeight();
+    let lastMessageHeight = newMessageElem.prev().innerHeight();
+
+    if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight){
+        messagesElem.scrollTop(scrollHeight);
+    }
+
+}
 
 var socket = io();
 socket.on('connect',function(){
@@ -21,7 +37,9 @@ socket.on('newMessage', function(msg) {
         createdAt: formattedTime
     });
     jQuery('#messages').append(html);
+    scrollToBottom();
 });
+
 //     // let formattedTime = moment(msg.createdAt).format('h:mm:ss a');
 //     // let li = jQuery('<li></li>');
 //     // li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
@@ -37,6 +55,7 @@ socket.on('newLocationMessage', function(msg){
         createdAt: formattedTime
     });
     jQuery('#messages').append(html);
+    scrollToBottom();
 
     //
     // let formattedTime = moment(msg.createdAt).format('h:mm:ss a');
