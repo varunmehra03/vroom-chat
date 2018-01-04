@@ -2,9 +2,9 @@ const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
-const {createMessage, createCoordsMessage} = require('./utils/utils');
+const {createMessage, createCoordsMessage, validateParams} = require('./utils/utils');
 const publicPath = path.join(__dirname,'../public');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
@@ -14,11 +14,20 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket)=>{
     console.log("New User Connected");
-    socket.broadcast.emit('newMessage', createMessage('Admin','New User Joined'));
-    socket.emit('newMessage',createMessage('Admin','Welcome to Vroom Chat'));
-
     socket.on('disconnect',()=>{
         console.log("User was disconnected");
+    });
+
+    socket.on('join', (params, callback) =>{
+        if(!validateParams(params.name) || !validateParams(params.room)){
+            callback('Name/RoomName are not valid');
+        }
+
+        socket.join(params.room);
+        socket.emit('newMessage',createMessage('Admin','Welcome to Vroom Chat'));
+        socket.broadcast.to(params.room).emit('newMessage', createMessage('Admin','New User Joined'));
+
+
     });
 
     socket.on('createMessage', (newMsg, callback) =>{

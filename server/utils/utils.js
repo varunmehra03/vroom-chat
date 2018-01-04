@@ -1,21 +1,5 @@
 const moment = require('moment');
 
-// var createMessage = (from, text)=>{
-//     return  {
-//         from,
-//         text,
-//         createdAt: new Date().getTime()
-//     };
-// };
-//
-// var createCoordsMessage = (from, text)=>{
-//     return  {
-//         from:from,
-//         text:text,
-//         createdAt: new Date().getTime()
-//     };
-// };
-
 module.exports = (function () {
     createMessage = (from, text)=>{
         return  {
@@ -31,9 +15,13 @@ module.exports = (function () {
             createdAt: new Date().getTime()
         };
     };
+    validateParams = (str)=>{
+        return typeof str ==='string' && str.trim().length
+    };
     return {
         createMessage:createMessage,
-        createCoordsMessage:createCoordsMessage
+        createCoordsMessage:createCoordsMessage,
+        validateParams:validateParams
 
     }
 })();

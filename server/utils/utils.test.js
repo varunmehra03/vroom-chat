@@ -1,5 +1,5 @@
 const expect = require('expect');
-const {createMessage, createCoordsMessage} = require('./utils');
+const {createMessage, createCoordsMessage,validateParams} = require('./utils');
 
 describe('createMessage', ()=>{
 
@@ -21,4 +21,17 @@ describe('createCoordsMessage', ()=>{
         expect(messageObj.from).toEqual(from);
         expect(messageObj.url).toEqual(`https://www.google.com/maps?q=${latitude},${longitude}`);
     });
+});
+
+describe('validateParams', ()=>{
+
+    it('Should reject non-string param values', ()=>{
+        expect(validateParams('    ')).toBe(false);
+        expect(validateParams('')).toBe(false);
+        expect(validateParams(9023)).toBe(false);
+    });
+    it('Should trim spaces from param values and return true', ()=>{
+        expect(validateParams('    Varun     ')).toBe(true);
+    });
+
 });
