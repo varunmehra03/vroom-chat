@@ -16,7 +16,7 @@ module.exports = (function () {
         };
     };
     validateParams = (str)=>{
-        return typeof str ==='string' && str.trim().length
+        return typeof str ==='string' && str.trim().length > 0;
     };
     return {
         createMessage:createMessage,
