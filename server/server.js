@@ -23,7 +23,7 @@ io.on('connection', (socket)=>{
         }else{
             let userList = users.getUserList(params.room);
             if(userList && userList.indexOf(params.name) !== -1){
-                return callback(`The name ${params.room} is already taken. Let's be creative and try a unique one !!');
+                return callback(`The name ${params.room} is already taken. Let's be creative and try a unique one !!`);
             }
         }
         socket.join(params.room);
